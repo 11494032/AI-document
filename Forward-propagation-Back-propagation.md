@@ -101,3 +101,78 @@ init_op = tf.global_variables_initializer()
 sess.run(init_op)
 	print(sess.run(y),feed_dict = {x:[[0.1,0.2],[0.2,0.4]]})
 ~~~
+
+## 反向传播
+反向传播：训练模型参数，在所有参数上使用梯度下降，使NN模型在训练数据上的损失函数最小。  
+- 损失函数(loss):预测值(y)与已知答案(z）的差距  
+- 均方误差MSE:   
+$$
+MSE(y,z) = \frac{1}{n}\sum_{i=1}^n(y - z)^2\tag{4}
+$$
+
+> loss = tf.reduce_mean(tf.square(y-z))  
+
+- 方向传播训练方法：以减少loss值为优化目标
+> train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)  
+> train_step = tf.train.MonmentumOptimizer(learning_rate,momentum).minimize(loss)  
+> train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)  
+
+- 学习率：决定参数每次更新的幅度  
+
+## 反向神经网络实现过程  
+- 准备数据集、提前特征、作为输入喂给神经网络  
+- 搭建NN结构，从输入到输出(先搭建计算图，再用会话执行)  
+>>NN前向传播算法-->计算输出  
+
+- 大量特征数据喂给NN,迭代优化NN参数  
+>>NN反向传播算法-->优化参数训练模型
+
+- 使用训练号的模型预测和分类
+
+
+
+##反向神经code
+~~~
+import tensorflow as tf
+import numpy as np
+
+
+#基于seed产生随机数
+seed = 23455
+rng = np.random.RandomState(seed)
+
+#随机数返回32行2列的矩阵, 表示32组,体积和重量 作为输入数据集
+X = rng.random(32,2)
+
+Y = [[int(x0 + x1 < 1)] for(x0,x1) in range X]
+
+#1.定义神经网络的输入、参数和输出,定义前向传播过程。
+x = tf.placeholder(tf.float32,shape = (None,2))
+z = tf.placeholder(tf.float32,shape = (None,1))
+
+w1 = tf.Variable(tf.random_normal([2,3],stddev=1, seed = 1 ))
+w2 = tf.Variable(tf.random_normal([3,1],stddev=1, seed = 1 ))
+
+a = tf.matmul( x, w1 )
+y = tf.matmul( w1, w2 )
+
+#2 定义损失函数及反向传播方法。
+loss = tf.reduce_mean(tf.square(y-z))
+train_step = tf.train.GradientDescentOptimizer(0.001).minimize(loss)
+
+#生成会话，训练STEPS轮
+with tf.Session() as sess:
+	init_op = tf.global_variables_initializer()
+	sess.run(init_op)
+	print("w1:",sess.run(w1))
+	print("w2:",sess.run(w2))
+	for i in range(3000):
+		start = (i*8)%32
+		end = start + 8
+		sess.run(loss,feed_dict={x:X[start,end],z:y[start,end]})
+		if i % 500 == 0:
+			sess.run(loss,feed_dict={x:X,z:y})
+	print("w1:",sess.run(w1))
+	print("w2:",sess.run(w2))	
+	
+~~~
