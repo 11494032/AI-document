@@ -51,9 +51,36 @@
  - 编译  
  ~~~
     cp Makefile.config.example Makefile.config      
-	 	vim Makefile.config   
-	 	make all -jx  
-	 	make test -j16  
-	 	make runtest -jx  
-	 	make pycaffe -jx 
+    vim Makefile.config  
+    	启用cuDNN,去掉'#' USE_CUDNN :=1
+    	INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/lib/x86_64-linux-gnu/hdf5/serial/include
+LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial
+	export PATH=/usr/local/cuda/bin:$PATH
+	export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+    make all -jx  
+    make test -j16  
+    make runtest -jx  
+    make pycaffe -jx 
 ~~~
+## 常见问题
+ - 1.ImportError: No module named skimage.io
+~~~
+	pip install scikit-image
+~~~
+- 2.ImportError: No module named google.protobuf
+~~~
+	sudo pip install protobuf
+~~~
+3.ImportError: No module named caffe
+~~~
+	export PYTHONPATH=/work/project/caffe/python:$PYTHONPATH
+~~~
+4. ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory
+~~~
+	export PYTHONPATH=/work/project/caffe/python:$PYTHONPATH
+	1. sudo ldconfig /usr/local/cuda-8.0/lib64
+	2.LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-8.0/lib64。如果仍然不行，再尝试执行:
+	export PATH=$PATH:/usr/local/cuda-8.0/bin
+	export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda-8.0/lib64
+	source /etc/profile
+~~~    
