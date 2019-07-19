@@ -18,22 +18,22 @@
 ~~~
 ## 安装CUDA
  - 下载安装文件。首先去英伟达官网下载cuda安装包  
- 	https://developer.nvidia.com/cuda-toolkit-archive
+ 	https://developer.nvidia.com/cuda-toolkit-archive  
 - 安装包  
-	~~~
-	sudo sh ./cuda_8.0.61_375.26_linux.run 
-	~~~  
-- 检测安装  
+		~~~ 
+		sudo sh ./cuda_8.0.61_375.26_linux.run 
+		~~~
+- 检测安装    
 ~~~
 	sudo nvcc -V  
 	cuda samplecd /usr/local/cuda-7.5/samples/1_Utilities/deviceQuery  
 	make -j4  
 	./deviceQuery  
-~~~
+~~~  
 ## 安装CUDNN
- - 下载cudnn的安装文件
-	https://developer.nvidia.com/rdp/cudnn-archive
- - 安装：
+ - 下载cudnn的安装文件  
+	https://developer.nvidia.com/rdp/cudnn-archive  
+ - 安装  
   ~~~
 	tar -zxvf cudnn-8.0-linux-x64-v5.1.tgz  
     cd cuda    
