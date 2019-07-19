@@ -132,7 +132,7 @@ $$
 
 
 ##反向神经code
-~~~
+~~~python
 import tensorflow as tf
 import numpy as np
 
@@ -169,9 +169,10 @@ with tf.Session() as sess:
 	for i in range(3000):
 		start = (i*8)%32
 		end = start + 8
-		sess.run(loss,feed_dict={x:X[start,end],z:y[start,end]})
+		sess.run(train_step,feed_dict={x:X[start,end],z:y[start,end]})
 		if i % 500 == 0:
-			sess.run(loss,feed_dict={x:X,z:y})
+			total_loss = sess.run(loss,feed_dict={x:X,z:y})
+    print("total_loss:",total_loss)
 	print("w1:",sess.run(w1))
 	print("w2:",sess.run(w2))	
 	
