@@ -5,10 +5,10 @@
 
  - [服务器配置参考](https://www.cnblogs.com/banju/p/7918895.html) 
  - GPU安装
- 	1.关闭bios里的secure boot(否则无法使用显卡驱动)
- 	2.设置----软件和更新----附加驱动----使用NVIDIA....(专有)----应用更改----（之后为半小时的等待）-----提示重新启动。
- 	3. 检测显卡驱动是否安装成功 nvidia-smi
- 	4. 安装依赖关系包
+    1.关闭bios里的secure boot(否则无法使用显卡驱动)
+    2.设置----软件和更新----附加驱动----使用NVIDIA....(专有)----应用更改----（之后为半小时的等待）-----提示重新启动。
+    3. 检测显卡驱动是否安装成功 nvidia-smi
+    4. 安装依赖关系包
  		sudo apt-get install vim python-pip git
         sudo apt-get install build-essential libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
         sudo apt-get install libopenblas-dev liblapack-dev libatlas-base-dev libgflags-dev libgoogle-glog-dev liblmdb-dev
@@ -23,6 +23,6 @@
 -检测安装
 	sudo nvcc -V
 	cuda samplecd /usr/local/cuda-7.5/samples/1_Utilities/deviceQuery
-make -j4
-./deviceQuery
+	make -j4
+	./deviceQuery
 	
